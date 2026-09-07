@@ -93,6 +93,8 @@ public class Login {
 
             if (password.equals(rightPassword)) {
                 System.out.println("登录成功");
+                FightingGame fg = new FightingGame();
+                fg.gameStart(u.getUsername());
                 return;
             } else {
                 System.out.println("密码输入错误，请重新输入");
@@ -213,11 +215,13 @@ public class Login {
         return new int[]{charCount, numCount, otherCount};
     }
 
+    // 用户名只能由字母、数字组成，不能是纯数字
     public boolean checkUsername(String username) {
         int[] counts = getCount(username);
         return counts[0] > 0 && counts[2] == 0;
     }
 
+    // 密码只能由字母、数字组成，不能有其他字母
     public boolean checkPassword(String password) {
         int[] counts = getCount(password);
         return counts[0] > 0 && counts[1] > 0 && counts[2] == 0;
@@ -234,6 +238,7 @@ public class Login {
         return false;
     }
 
+    // 验证码
     public String getCode() {
         //#### 2.3 验证码规则：
         //长度为5
