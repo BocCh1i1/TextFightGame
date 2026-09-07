@@ -25,16 +25,16 @@ public class FightingGame {
 
         //2.4 敌人类型
         //敌人名称	生命值	攻击力	防御力	技能（变量）
-        //初级战士	80	15	10	猛击（150%伤害）
+        //初级战士	80	15	10	猛击（130%伤害）
         //敏捷刺客	60	20	5	快速攻击（2次50%伤害）
-        //重装坦克	120	10	20	防御姿态（下回合伤害减半） buff（ boolean defending）
-        //神秘法师	70	25	8	火球术（180%伤害）
+        //重装坦克	100	10	15	防御姿态（下回合伤害减半） buff（ boolean defending）
+        //神秘法师	65	22	8	火球术（150%伤害）
 
         ArrayList<EnemyCharacter> enemyList = new ArrayList<>();
         enemyList.add(new EnemyCharacter("初级战士", 80, 15, 10, "猛击"));
         enemyList.add(new EnemyCharacter("敏捷刺客", 60, 20, 5, "快速攻击"));
-        enemyList.add(new EnemyCharacter("重装坦克", 120, 10, 20, "防御姿态"));
-        enemyList.add(new EnemyCharacter("神秘法师", 70, 25, 8, "火球术"));
+        enemyList.add(new EnemyCharacter("重装坦克", 100, 10, 15, "防御姿态"));
+        enemyList.add(new EnemyCharacter("神秘法师", 65, 22, 8, "火球术"));
 
 
         int count = 1;//记录跟第几个敌人战斗
@@ -43,15 +43,15 @@ public class FightingGame {
         while (player.isAlive()) {
             // 战斗
 
-            //5.1 重置敌人的属性，敌人属性每场HP+10, ATK+3, DEF+2
+            //5.1 重置敌人的属性，敌人属性每场HP+8, ATK+2, DEF+1
             if (wins > 0) {
                 for (int i = 0; i < enemyList.size(); i++) {
                     EnemyCharacter c = enemyList.get(i);
 
-                    c.maxHP += 10;
+                    c.maxHP += 8;
                     c.HP = c.maxHP;
-                    c.attack += 3;
-                    c.defense += 2;
+                    c.attack += 2;
+                    c.defense += 1;
                     c.defending = false;
                 }
             }
@@ -97,31 +97,29 @@ public class FightingGame {
 
             }
 
-            //3.3 战斗结算
+            //战斗结算
             //胜利时：
-            //恢复20-40点生命值
+            //恢复30-60点生命值
             //胜场数+1
             //每3胜获得属性提升
             //失败时：游戏结束
             if (player.isAlive()) {
-                int healAmount = r.nextInt(21) + 20;
+                int healAmount = r.nextInt(31) + 30;
 
-                //💚 战斗结束！你恢复了 36 点生命值
-                //🏆 当前胜场: 1
                 player.heal(healAmount);
                 System.out.println("💚 战斗结束！你恢复了 " + healAmount + " 点生命值");
                 System.out.println("🏆 当前胜场: " + wins);
                 System.out.println("═══════════════════════════════════════");
 
                 if (wins % 3 == 0) {
-                    //生命值(HP) / maxHP	角色生存能力	初始血量100 + 分配点数×10	每3胜+30
-                    //攻击力(ATK)	影响伤害输出	初始攻击10 + 分配点数×2	每3胜+5
-                    //防御力(DEF)	减少受到的伤害	初始防御0 + 分配点数×1	每3胜+3
-                    player.maxHP += 30;
-                    player.attack += 5;
-                    player.defense += 3;
+                    //生命值(HP) / maxHP	角色生存能力	初始血量100 + 分配点数×10	每3胜+40
+                    //攻击力(ATK)	影响伤害输出	初始攻击10 + 分配点数×2	每3胜+7
+                    //防御力(DEF)	减少受到的伤害	初始防御0 + 分配点数×1	每3胜+4
+                    player.maxHP += 40;
+                    player.attack += 7;
+                    player.defense += 4;
                     System.out.println("⭐恭喜你，你获得了属性提升！");
-                    System.out.println("最大生命值提升至 + 30，攻击力提升至 + 5，防御力提升至 + 3");
+                    System.out.println("最大生命值提升至 + 40，攻击力提升至 + 7，防御力提升至 + 4");
                     System.out.println("当前属性: " + player.show());
 
                 }
@@ -282,7 +280,7 @@ public class FightingGame {
                 if (player.HP > 10) {
                     player.takeDamage(10);
                     Random r = new Random();
-                    int healH = r.nextInt(21);
+                    int healH = r.nextInt(21) + 10;
                     player.heal(healH);
                     System.out.println("💚 消耗10HP，你使用了生命汲取，恢复了" + healH + "点生命值");
 
@@ -299,14 +297,14 @@ public class FightingGame {
     private void enemyTurn(EnemyCharacter enemy, HeroCharacter player) {
         System.out.println("===== 敌人回合 =====");
 
-        //敌人回合：选择行动（ 50%的几率普通攻击 / 50%的几率技能攻击 ）
+        //敌人回合：选择行动（ 70%的几率普通攻击 / 30%的几率技能攻击 ）
 
         String action = "普通攻击"; // 默认行动为普通攻击
 
         Random r = new Random();
-        int choose = r.nextInt(2);
+        int choose = r.nextInt(10);
 
-        if (choose == 1) {
+        if (choose < 3) {
             action = enemy.skill;
         }
 
@@ -317,9 +315,9 @@ public class FightingGame {
                 System.out.println("⚔️  " + enemy.name + "对" + player.name + "使用了普通攻击，造成 " + damage1 + " 点伤害！");
                 player.takeDamage(damage1);
                 break;
-            //初级战士	80	15	10	猛击（150%伤害）
+            //初级战士	80	15	10	猛击（130%伤害）
             case "猛击":
-                int damage2 = calculateDamage((int) (enemy.attack * 1.5), player.defense);
+                int damage2 = calculateDamage((int) (enemy.attack * 1.3), player.defense);
                 System.out.println("💥 " + enemy.name + "对" + player.name + "使用了猛击，造成 " + damage2 + " 点伤害！");
                 player.takeDamage(damage2);
                 break;
@@ -332,14 +330,14 @@ public class FightingGame {
                 System.out.println("💨 " + enemy.name + "对" + player.name + "使用了快速攻击，造成 " + damage3 + " 点伤害！");
                 player.takeDamage(damage3);
                 break;
-            //重装坦克	120	10	20	防御姿态（下回合伤害减半） buff（ boolean defending）
+            //重装坦克	100	10	15	防御姿态（下回合伤害减半） buff（ boolean defending）
             case "防御姿态":
                 enemy.defending = true;
                 System.out.println("🛡️ " + enemy.name + "使用了防御姿态，下回合伤害减半！");
                 break;
-            //神秘法师	70	25	8	火球术（180%伤害）
+            //神秘法师	65	22	8	火球术（150%伤害）
             case "火球术":
-                int damage4 = calculateDamage((int) (enemy.attack * 1.8), player.defense);
+                int damage4 = calculateDamage((int) (enemy.attack * 1.5), player.defense);
                 System.out.println("🔥 " + enemy.name + "对" + player.name + "使用了火球术，造成 " + damage4 + " 点伤害！");
                 player.takeDamage(damage4);
                 break;
