@@ -7,10 +7,15 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Login {
+
+    private Scanner sc = new Scanner(System.in);
     //登录主界面
     public void start() {
 
         ArrayList<User> list = new ArrayList<>();
+
+
+
         while (true) {
             System.out.println("游戏的登录界面打开了");
             System.out.println("╔════════════════════════════════╗");
@@ -18,7 +23,7 @@ public class Login {
             System.out.println("╚════════════════════════════════╝");
             System.out.println("请选择操作：1登录 2注册 3退出");
 
-            Scanner sc = new Scanner(System.in);
+
             String choose = sc.next();
 
             switch (choose) {
@@ -52,7 +57,7 @@ public class Login {
         //
         //判断用户名和密码是否正确，有3次机会，满3次账户锁定。
 
-        Scanner sc = new Scanner(System.in);
+
 
         System.out.println("请输入用户名：");
         String username = sc.next();
@@ -117,7 +122,6 @@ public class Login {
         System.out.println("注册");
         User u = new User();
 
-        Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.println("请输入用户名：");
             String username = sc.next();

@@ -229,7 +229,7 @@ public class FightingGame {
 
         StringBuilder sb = new StringBuilder();
         sb.append(name + ":  【");
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < barLength; i++) {
             if (i < filled) {
                 sb.append("█");
             } else {
