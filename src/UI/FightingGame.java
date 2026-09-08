@@ -43,7 +43,7 @@ public class FightingGame {
         while (player.isAlive()) {
             // 战斗
 
-            //5.1 重置敌人的属性，敌人属性每场HP+8, ATK+2, DEF+1
+            // 重置敌人的属性，敌人属性每场HP+8, ATK+2, DEF+1
             if (wins > 0) {
                 for (int i = 0; i < enemyList.size(); i++) {
                     EnemyCharacter c = enemyList.get(i);
@@ -56,12 +56,12 @@ public class FightingGame {
                 }
             }
 
-            //5.2 随机选择敌人(Random)
+            // 随机选择敌人(Random)
             Random r = new Random();
             int enemyIndex = r.nextInt(enemyList.size());
             EnemyCharacter enemy = enemyList.get(enemyIndex);
 
-            //5.3 战斗开始，显示双方状态（生命值）
+            // 战斗开始
             System.out.println("═══════════════════════════════════════");
             System.out.println("⚔️ 第 " + count + " 场战斗开始！对手: " + enemy.name);
 
@@ -71,6 +71,7 @@ public class FightingGame {
                 System.out.println("---------------------------------------");
                 System.out.println("⚔️ 第 " + round + " 回合开始！");
 
+                //显示双方状态（生命值）
                 System.out.println(getHPBar(player.name, player.HP, player.maxHP));
                 System.out.println(getHPBar(enemy.name, enemy.HP, enemy.maxHP));
 
@@ -131,10 +132,10 @@ public class FightingGame {
                 System.out.println("是否继续游戏？(y/n)");
                 Scanner sc = new Scanner(System.in);
                 String choice = sc.next();
-                if (!choice.equalsIgnoreCase("y")) {
+                if (choice.equalsIgnoreCase("n")) {
                     System.out.println("游戏结束，感谢游玩！");
                     break;
-                } else if (choice.equalsIgnoreCase("n")) {
+                } else if (choice.equalsIgnoreCase("y")) {
                     System.out.println("继续游戏！");
                     count++;
                 } else {
@@ -283,13 +284,10 @@ public class FightingGame {
                     int healH = r.nextInt(21) + 10;
                     player.heal(healH);
                     System.out.println("💚 消耗10HP，你使用了生命汲取，恢复了" + healH + "点生命值");
-
-
                 } else {
-
+                    System.out.println("你的HP不足10点，无法使用生命汲取");
                 }
                 break;
-
         }
     }
 
@@ -342,7 +340,6 @@ public class FightingGame {
                 player.takeDamage(damage4);
                 break;
         }
-
     }
 
 

@@ -36,8 +36,7 @@ public class Login {
     //登录操作
     public void login(ArrayList<User> list) {
         System.out.println("登录");
-        //### 2.2 登录功能：
-        //
+        //登录功能：
         //. 键盘录入用户名
         //. 键盘录入密码
         //. 键盘录入验证码
@@ -47,7 +46,7 @@ public class Login {
         //
         //用户名如果未注册提示：用户名未注册，请先注册
         //
-        //用户被锁定提示：用户xxx已经锁定，请联系黑马程序员官方客服：XXX-XXXXX
+        //用户被锁定提示：用户xxx已经锁定，请联系程序员官方客服：XXX-XXXXX
         //
         //验证码错误提示：验证码输入错误，请重新输入，并生成一个新的验证码
         //
@@ -105,13 +104,13 @@ public class Login {
                 } else {
                     System.out.println("还剩" + (2 - i) + "次机会");
                 }
-
             }
 
         }
 
 
     }
+
 
     //注册操作
     public void register(ArrayList<User> list) {
