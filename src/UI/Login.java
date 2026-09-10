@@ -2,6 +2,12 @@ package UI;
 
 import domain.User;
 
+import java.io.BufferedWriter; //导入：带缓冲的写入器
+import java.io.BufferedReader; //导入：带缓冲的读取器
+import java.io.File;           //导入：文件
+import java.io.FileReader;     //导入：文件读取器
+import java.io.FileWriter;     //导入：文件写入器
+import java.io.IOException;    //导入：输入输出异常
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -9,12 +15,11 @@ import java.util.Scanner;
 public class Login {
 
     private Scanner sc = new Scanner(System.in);
+
     //登录主界面
     public void start() {
 
-        ArrayList<User> list = new ArrayList<>();
-
-
+        ArrayList<User> list = loadUsers();
 
         while (true) {
             System.out.println("游戏的登录界面打开了");
@@ -56,7 +61,6 @@ public class Login {
         //验证码错误提示：验证码输入错误，请重新输入，并生成一个新的验证码
         //
         //判断用户名和密码是否正确，有3次机会，满3次账户锁定。
-
 
 
         System.out.println("请输入用户名：");
@@ -178,6 +182,7 @@ public class Login {
         }
 
         list.add(u);
+        saveUsers(list);
         System.out.println("注册成功");
     }
 
@@ -276,6 +281,45 @@ public class Login {
 
         return code;
     }
+
+    // 保存用户数据
+    public static void saveUsers(ArrayList<User> list) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("users.txt"))) {
+            for (int i = 0; i < list.size(); i++) {
+                User u = list.get(i);
+                bw.write(u.getUsername() + "," + u.getPassword() + "," + u.isStatus());
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("保存用户数据失败");
+        }
+    }
+
+    // 加载用户数据
+    public static ArrayList<User> loadUsers() {
+        ArrayList<User> list = new ArrayList<>();
+
+        File file = new File("users.txt");
+        if (!file.exists()) {
+            return list;
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                User u = new User();
+                u.setUsername(parts[0]);
+                u.setPassword(parts[1]);
+                u.setStatus(Boolean.parseBoolean(parts[2]));
+                list.add(u);
+            }
+        } catch (IOException e) {
+            System.out.println("读取用户数据失败");
+        }
+        return list;
+    }
+
 
 }
 

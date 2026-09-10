@@ -4,16 +4,16 @@ import java.util.ArrayList;
 
 public class HeroCharacter extends Character {
 
-    public ArrayList<String> skillsList = new ArrayList<String>();
+    public ArrayList<String> skillsList = new ArrayList<>();
 
     public HeroCharacter() {
         super();
-        this.skillsList = new ArrayList<String>();
+        this.skillsList = new ArrayList<>();
     }
 
     public HeroCharacter(String name, int HP, int attack, int defense) {
         super(name, HP, attack, defense);
-        this.skillsList = new ArrayList<String>();
+        this.skillsList = new ArrayList<>();
     }
 
     // 获取角色技能列表
