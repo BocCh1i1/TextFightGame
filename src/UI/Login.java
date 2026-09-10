@@ -108,6 +108,7 @@ public class Login {
                 System.out.println("密码输入错误，请重新输入");
                 if (i == 2) {
                     u.setStatus(false);
+                    saveUsers(list);
                     System.out.println("用户" + username + "已经锁定，请联系程序员官方客服：XXX-XXXXX");
                     return;
                 } else {
@@ -287,7 +288,7 @@ public class Login {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("users.txt"))) {
             for (int i = 0; i < list.size(); i++) {
                 User u = list.get(i);
-                bw.write(u.getUsername() + "," + u.getPassword() + "," + u.isStatus());
+                bw.write(u.getId() + "," + u.getUsername() + "," + u.getPassword() + "," + u.isStatus());
                 bw.newLine();
             }
         } catch (IOException e) {
@@ -307,11 +308,22 @@ public class Login {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
+                if (line.isBlank()) {
+                    continue;
+                }
+
                 String[] parts = line.split(",");
+
+                if (parts.length < 4) {                       // ← 注意：是 4，不是 3
+                    System.out.println("跳过格式错误的行：" + line);
+                    continue;
+                }
+
                 User u = new User();
-                u.setUsername(parts[0]);
-                u.setPassword(parts[1]);
-                u.setStatus(Boolean.parseBoolean(parts[2]));
+                u.setId(parts[0]);
+                u.setUsername(parts[1]);
+                u.setPassword(parts[2]);
+                u.setStatus(Boolean.parseBoolean(parts[3]));
                 list.add(u);
             }
         } catch (IOException e) {
